@@ -1,7 +1,7 @@
 public class Wentylator {
     private boolean isWorking;
     private int coolingPowerPercentage;
-
+    //geters and setters
     public int getCoolingPowerPercentage() {
         return coolingPowerPercentage;
     }
