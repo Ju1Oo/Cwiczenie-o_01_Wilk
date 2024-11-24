@@ -1,7 +1,7 @@
 
 
 public class Czujnik {
-    private String typ;
+    private String typ; //typ czujnika (wewnetrzny/zewnetrzny
     private double temperatura;
 
     public Czujnik(String typ, double temperaturaPoczatkowa) {

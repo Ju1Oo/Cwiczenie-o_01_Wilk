@@ -73,14 +73,26 @@ public class Urzadzenie {
 
     public void sprawdzStan() {
         if (temperaturaUrzadzenia < 0) {
+            // Punkt 4: Urządzenie zostaje wyłączone, gdy temperatura < 0
             wylaczUrzadzenie();
             System.out.println("Za niska temperatura urządzenia grozi awarią. System został wyłączony.");
         } else if (temperaturaUrzadzenia > 130) {
+            // Punkt 6: Urządzenie wyłącza się powyżej 130°C, wentylatory na 100%
             wylaczUrzadzenie();
             wlaczWszystkieWentylatory(100);
-            System.out.println("Temperatura przekroczyła 130°C. Urządzenie zostało wyłączone.");
+            System.out.println("Temperatura przekroczyła 130°C. Urządzenie zostało wyłączone, wentylatory na pełnej mocy.");
         } else if (temperaturaUrzadzenia > 100) {
+            // Punkt 5: Ostrzeżenie o wysokiej temperaturze powyżej 100°C
             System.out.println("Ostrzeżenie: Wysoka temperatura urządzenia.");
+        }
+
+        // Punkty 1, 2, 3: Zarządzanie mocą wentylatorów w zależności od temperatury
+        if (temperaturaUrzadzenia <= 50) {
+            wlaczWszystkieWentylatory(0); // Wentylatory wyłączone
+        } else if (temperaturaUrzadzenia <= 75) {
+            wlaczWszystkieWentylatory(50); // Wentylatory na połowie mocy
+        } else if (temperaturaUrzadzenia <= 130) {
+            wlaczWszystkieWentylatory(100); // Wentylatory na pełnej mocy
         }
     }
 
