@@ -1,45 +1,34 @@
+
+
 public class Wentylator {
-    private boolean isWorking;
-    private int coolingPowerPercentage;
-    //geters and setters
-    public int getCoolingPowerPercentage() {
-        return coolingPowerPercentage;
+    private int moc; // Moc wentylatora: 0%, 50%, 100%
+    private boolean wlaczony;
+
+    public Wentylator() {
+        this.moc = 0;
+        this.wlaczony = false;
     }
 
-    public void setCoolingPowerPercentage(int coolingPowerPercentage) {
-        this.coolingPowerPercentage = coolingPowerPercentage;
-    }
-
-    public boolean isWorking() {
-        return isWorking;
-    }
-
-    public void setWorking(boolean working) {
-        isWorking = working;
-    }
-
-    public void coolingControl(int temperature)
-    {
-        if(temperature < 50 || temperature > 130)
-        {
-            this.isWorking = false;
+    public void wlacz(int moc) {
+        if (moc != 0 && moc != 50 && moc != 100) {
+            throw new IllegalArgumentException("Nieprawidłowa moc wentylatora. Dozwolone wartości to 0, 50, 100.");
         }
-        else
-        {
-            this.isWorking = true;
-        }
-
-        if(temperature >= 50 && temperature <= 75)
-        {
-            this.coolingPowerPercentage = 50;
-        }
-
-        if(temperature >=75 && temperature <= 130)
-        {
-            this.coolingPowerPercentage = 50;
-        }
+        this.moc = moc;
+        this.wlaczony = true;
+        System.out.println("Wentylator włączony z mocą: " + moc + "%");
     }
 
+    public void wylacz() {
+        this.moc = 0;
+        this.wlaczony = false;
+        System.out.println("Wentylator został wyłączony.");
+    }
 
+    public int pobierzMoc() {
+        return this.moc;
+    }
 
+    public boolean czyWlaczony() {
+        return this.wlaczony;
+    }
 }
