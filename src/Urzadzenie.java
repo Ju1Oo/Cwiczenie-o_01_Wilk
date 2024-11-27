@@ -11,6 +11,7 @@ public class Urzadzenie {
     private List<Wentylator> wentylatory;
     private Czujnik czujnikUrzadzenia;
     private Czujnik czujnikOtoczenia;
+    private boolean symulacja = true;
 
     public Urzadzenie(double temperaturaUrzadzenia, double temperaturaOtoczenia, int liczbaWentylatorow) {
         this.temperaturaUrzadzenia = temperaturaUrzadzenia;
@@ -62,7 +63,10 @@ public class Urzadzenie {
             // Chłodzenie
             for (Wentylator wentylator : wentylatory) {
                 if (wentylator.pobierzMoc() == 100) {
-                    temperaturaUrzadzenia -= 1.0;
+                    temperaturaUrzadzenia -= 1 + 1/Math.abs(temperaturaOtoczenia);
+                }
+               else if (wentylator.pobierzMoc() == 50) {
+                    temperaturaUrzadzenia -= 0.5 + 1/Math.abs(temperaturaOtoczenia);
                 }
             }
         }
@@ -76,6 +80,8 @@ public class Urzadzenie {
             // Punkt 4: Urządzenie zostaje wyłączone, gdy temperatura < 0
             wylaczUrzadzenie();
             System.out.println("Za niska temperatura urządzenia grozi awarią. System został wyłączony.");
+            this.symulacja=false;
+
         } else if (temperaturaUrzadzenia > 130) {
             // Punkt 6: Urządzenie wyłącza się powyżej 130°C, wentylatory na 100%
             wylaczUrzadzenie();
@@ -106,7 +112,10 @@ public class Urzadzenie {
         for (int i = 0; i < czasPracy; i++) {
             aktualizujTemperature();
             sprawdzStan();
-            System.out.println("Minuta: " + (i + 1) + ", Temperatura urządzenia: " + temperaturaUrzadzenia + "°C");
+            if(!symulacja)
+            {break;}
+            temperaturaUrzadzenia = (double) Math.round(temperaturaUrzadzenia * 10) /10;
+            System.out.println("Minuta: " + (i + 1) + ", Temperatura urządzenia: " +temperaturaUrzadzenia + "°C");
 
             // Wyłącz automatycznie poniżej 55°C
             if (!wlaczone && temperaturaUrzadzenia < 55) {
@@ -114,7 +123,7 @@ public class Urzadzenie {
             }
 
             try {
-                Thread.sleep(100); // Symulacja 1 minuty w czasie rzeczywistym
+                Thread.sleep(300); // Symulacja 1 minuty w czasie rzeczywistym
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

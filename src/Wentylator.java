@@ -15,7 +15,6 @@ public class Wentylator {
         }
         this.moc = moc;
         this.wlaczony = true;
-        System.out.println("Wentylator włączony z mocą: " + moc + "%");
     }
 
     public void wylacz() {
