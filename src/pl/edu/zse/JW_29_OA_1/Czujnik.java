@@ -1,4 +1,4 @@
-
+package pl.edu.zse.JW_29_OA_1;
 
 public class Czujnik {
     private String typ; //typ czujnika (wewnetrzny/zewnetrzny

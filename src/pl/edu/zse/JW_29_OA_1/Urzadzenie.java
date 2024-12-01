@@ -1,3 +1,5 @@
+package pl.edu.zse.JW_29_OA_1;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,6 +127,10 @@ public class Urzadzenie {
     //nowa metoda zamiast tej powyzej
     public void wlaczWentylator(int moc, int nrWentylatora) {
         Wentylator wentylator = wentylatory.get(nrWentylatora);
+        if(wentylator.pobierzMoc() != moc)
+        {
+            System.out.println("Wentylator " + (nrWentylatora + 1) + " uruchomiony z mocą: " + moc + "%");
+        }
         wentylator.wlacz(moc);
     }
 
@@ -145,7 +151,7 @@ public class Urzadzenie {
                         (temperaturaUrzadzenia <= 75) ? 50 : 100;
 
                 wlaczWentylator(mocWentylatora, nrWentylatora);
-                System.out.println("Wentylator " + (nrWentylatora + 1) + " uruchomiony z mocą: " + mocWentylatora + "%");
+
             }
 
             temperaturaUrzadzenia = (double) Math.round(temperaturaUrzadzenia * 10) / 10;
