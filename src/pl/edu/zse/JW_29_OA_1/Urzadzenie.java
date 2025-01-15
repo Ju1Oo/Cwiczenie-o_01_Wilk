@@ -23,6 +23,10 @@ public class Urzadzenie {
             System.out.println("podano nieprawidlowa temperature otoczenia zmiana wartosci na 10");
             temperaturaOtoczenia = 10;
         }
+        if(temperaturaOtoczenia ==0)
+        {
+            temperaturaOtoczenia = 1;
+        }
 
         this.wlaczone = false;
         this.wentylatory = new ArrayList<>();
@@ -70,9 +74,10 @@ public class Urzadzenie {
             // Nagrzewanie
             double przyrost = 5.0;
 
-            Wentylator wentylator = wentylatory.getFirst();
-            if (wentylator.czyWlaczony()) {
-                przyrost -= (wentylator.pobierzMoc() / 100.0) * 2.0;
+            for( Wentylator wentylator : wentylatory ) {
+                if (wentylator.czyWlaczony()) {
+                    przyrost -= (wentylator.pobierzMoc() / 100.0) * 2.0;
+                }
             }
 
             temperaturaUrzadzenia += przyrost;
@@ -80,10 +85,10 @@ public class Urzadzenie {
             // Chłodzenie
             for (Wentylator wentylator : wentylatory) {
                 if (wentylator.pobierzMoc() == 100) {
-                    temperaturaUrzadzenia -= 1 + 1/Math.abs(temperaturaOtoczenia);
+                    temperaturaUrzadzenia -= 1 + Math.abs(temperaturaOtoczenia);
                 }
                 else if (wentylator.pobierzMoc() == 50) {
-                    temperaturaUrzadzenia -= 0.5 + 1/Math.abs(temperaturaOtoczenia);
+                    temperaturaUrzadzenia -= 0.5 + Math.abs(temperaturaOtoczenia);
                 }
             }
         }
@@ -106,6 +111,10 @@ public class Urzadzenie {
         } else if (temperaturaUrzadzenia > 100) {
             // Punkt 5: Ostrzeżenie o wysokiej temperaturze powyżej 100°C
             System.out.println("Ostrzeżenie: Wysoka temperatura urządzenia.");
+        }
+        else if (temperaturaUrzadzenia < 50) {
+            // Punkt 5: Ostrzeżenie o wysokiej temperaturze powyżej 100°C
+
         }
 
         /* Punkty 1, 2, 3: Zarządzanie mocą wentylatorów w zależności od temperatury
@@ -134,15 +143,20 @@ public class Urzadzenie {
         wentylator.wlacz(moc);
     }
 
+    public void wylaczWentylator(int nrWentylatora) {
+        Wentylator wentylator = wentylatory.get(nrWentylatora);
+
+            System.out.println("Wentylator " + (nrWentylatora + 1) + " wylaczony");
+
+        wentylator.wylacz();
+    }
+
     public void symulujPrace() {
         for (int i = 0; i < czasPracy; i++) {
             aktualizujTemperature();
             sprawdzStan();
 
-            if (!symulacja) {
-                System.out.println("Za niska temperatura urządzenia grozi awarią. System został wyłączony.");
-                break;
-            }
+
 
             // Sekwencyjne włączanie wentylatorów co minutę
             if (wlaczone) {
@@ -152,6 +166,11 @@ public class Urzadzenie {
 
                 wlaczWentylator(mocWentylatora, nrWentylatora);
 
+                if(temperaturaUrzadzenia < 50)
+                {
+                    wylaczWentylator(nrWentylatora);
+                }
+
             }
 
             temperaturaUrzadzenia = (double) Math.round(temperaturaUrzadzenia * 10) / 10;
@@ -160,6 +179,11 @@ public class Urzadzenie {
             // Wyłącz automatycznie poniżej 55°C
             if (!wlaczone && temperaturaUrzadzenia < 55) {
                 wlaczUrzadzenie();
+            }
+
+            if (!symulacja) {
+                System.out.println("Za niska temperatura urządzenia grozi awarią. System został wyłączony.");
+                break;
             }
 
             try {
